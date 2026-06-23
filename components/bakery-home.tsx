@@ -125,7 +125,7 @@ export function BakeryHome() {
 
       <footer id="rodape">
         <div className="shell footer-grid"><div><Logo light /><p>Pães, doces e encontros.<br />Feitos com calma em Teresina.</p></div><div><h3>Visite a gente</h3><p>Rua da Alegria, 3055<br />Santo Antônio • Teresina, PI</p></div><div><h3>Horários</h3><p>Seg–Sáb: 5h às 21h<br />Dom: 5h às 12h</p></div><div><h3>Siga o cheiro</h3><a className="social" href="#"><Instagram size={18} /> @padariapaonosso</a></div></div>
-        <div className="shell footer-bottom"><span>© 2026 Pá do Sol</span><span>Feito à mão, como nossos pães.</span></div>
+        <div className="shell footer-bottom"><span>© 2026 Padaria Pão Nosso</span><span>Feito à mão, como nossos pães.</span></div>
       </footer>
     </main>
   );

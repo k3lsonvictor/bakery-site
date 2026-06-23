@@ -143,7 +143,7 @@ export function CartPage() {
                   </div>
                 </fieldset>
               ) : (
-                <div className="pickup-notice"><MapPin size={22} /><div><strong>Retirada na Pá do Sol</strong><p>Rua das Flores, 180 • Aldeota, Fortaleza</p></div></div>
+                <div className="pickup-notice"><MapPin size={22} /><div><strong>Retirada na Padaria Pão Nosso</strong><p>Rua da Alegria, 3055 • Santo Antônio, Teresina</p></div></div>
               )}
               <label className="order-note"><span>Observações do pedido <small>(opcional)</small></span><textarea placeholder="Alguma preferência ou informação importante?" /></label>
               <button className="button button--primary form-next" type="submit">Ir para pagamento <ArrowRight size={18} /></button>

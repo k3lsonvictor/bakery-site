@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 import { CartProvider } from "@/components/cart-provider";
 
 export const metadata: Metadata = {
-  title: "Pá do Sol | Padaria artesanal",
+  title: "Padaria Pão Nosso",
   description: "Pães, doces e bolos preparados artesanalmente todos os dias.",
 };
 
