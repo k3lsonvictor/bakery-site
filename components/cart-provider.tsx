@@ -22,18 +22,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
-    const savedCart = window.localStorage.getItem("pa-do-sol-cart");
+    const savedCart = window.localStorage.getItem("pao-nosso-cart");
     if (savedCart) setCart(JSON.parse(savedCart));
-    const savedFavorites = window.localStorage.getItem("pa-do-sol-favorites");
+    const savedFavorites = window.localStorage.getItem("pao-nosso-favorites");
     if (savedFavorites) setFavorites(JSON.parse(savedFavorites));
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem("pa-do-sol-cart", JSON.stringify(cart));
+    window.localStorage.setItem("pao-nosso-cart", JSON.stringify(cart));
   }, [cart]);
 
   useEffect(() => {
-    window.localStorage.setItem("pa-do-sol-favorites", JSON.stringify(favorites));
+    window.localStorage.setItem("pao-nosso-favorites", JSON.stringify(favorites));
   }, [favorites]);
 
   const add = (id: string) => setCart((current) => ({ ...current, [id]: (current[id] || 0) + 1 }));
