@@ -46,7 +46,7 @@ export function BakeryHome({ products, weeklyHighlight }: { products: Product[];
             <a href="#rodape" onClick={() => setMobileOpen(false)}>Visite-nos</a>
           </nav>
           <div className="header-actions">
-            <button className="icon-button desktop-action" aria-label="Minha conta"><UserRound size={19} /></button>
+            {/* <button className="icon-button desktop-action" aria-label="Minha conta"><UserRound size={19} /></button> */}
             <Link className="icon-button header-favorites" href="/favoritos" aria-label={`Favoritos: ${favoriteCount} itens`}>
               <Heart size={19} />
               {favoriteCount > 0 && <b>{favoriteCount}</b>}
