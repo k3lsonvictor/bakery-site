@@ -1,0 +1,20 @@
+{
+  "name": "pa-do-sol-studio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/icons": "^3.7.4",
+    "@sanity/vision": "^5.31.1",
+    "sanity": "^5.31.1",
+    "styled-components": "^6.4.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.3",
+    "typescript": "^5.7.2"
+  }
+}
