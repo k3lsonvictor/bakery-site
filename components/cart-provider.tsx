@@ -3,23 +3,23 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 type CartContextValue = {
-  cart: Record<number, number>;
+  cart: Record<string, number>;
   cartCount: number;
-  favorites: number[];
+  favorites: string[];
   favoriteCount: number;
-  add: (id: number) => void;
-  remove: (id: number) => void;
-  removeItem: (id: number) => void;
+  add: (id: string) => void;
+  remove: (id: string) => void;
+  removeItem: (id: string) => void;
   clear: () => void;
-  isFavorite: (id: number) => boolean;
-  toggleFavorite: (id: number) => void;
+  isFavorite: (id: string) => boolean;
+  toggleFavorite: (id: string) => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<Record<number, number>>({});
-  const [favorites, setFavorites] = useState<number[]>([1]);
+  const [cart, setCart] = useState<Record<string, number>>({});
+  const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
     const savedCart = window.localStorage.getItem("pa-do-sol-cart");
@@ -36,17 +36,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     window.localStorage.setItem("pa-do-sol-favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  const add = (id: number) => setCart((current) => ({ ...current, [id]: (current[id] || 0) + 1 }));
-  const remove = (id: number) => setCart((current) => ({ ...current, [id]: Math.max((current[id] || 0) - 1, 0) }));
-  const removeItem = (id: number) => setCart((current) => {
+  const add = (id: string) => setCart((current) => ({ ...current, [id]: (current[id] || 0) + 1 }));
+  const remove = (id: string) => setCart((current) => ({ ...current, [id]: Math.max((current[id] || 0) - 1, 0) }));
+  const removeItem = (id: string) => setCart((current) => {
     const next = { ...current };
     delete next[id];
     return next;
   });
   const clear = () => setCart({});
   const cartCount = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
-  const isFavorite = (id: number) => favorites.includes(id);
-  const toggleFavorite = (id: number) => setFavorites((current) =>
+  const isFavorite = (id: string) => favorites.includes(id);
+  const toggleFavorite = (id: string) => setFavorites((current) =>
     current.includes(id) ? current.filter((favoriteId) => favoriteId !== id) : [...current, id],
   );
 

@@ -18,16 +18,16 @@ import { useMemo, useState } from "react";
 import { Logo } from "./logo";
 import { ProductGrid } from "./product-grid";
 import type { Product } from "./product-card";
-import { products } from "@/lib/products";
+import { currencyFormatter, type WeeklyHighlight } from "@/lib/products";
 import { useCart } from "./cart-provider";
-
 type Category = "Todos" | Product["category"];
 
-export function BakeryHome() {
+export function BakeryHome({ products, weeklyHighlight }: { products: Product[]; weeklyHighlight: WeeklyHighlight | null }) {
   const [category, setCategory] = useState<Category>("Todos");
   const [query, setQuery] = useState("");
   const { cart, cartCount, favoriteCount, add, remove, isFavorite, toggleFavorite } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const featuredProduct = weeklyHighlight?.product || products[0];
 
   const visible = useMemo(
     () => products.filter((product) => (category === "Todos" || product.category === category) && product.name.toLowerCase().includes(query.toLowerCase())),
@@ -108,13 +108,13 @@ export function BakeryHome() {
         <div className="feature shell">
           <div className="feature__copy">
             <p className="eyebrow light">DESTAQUE DA SEMANA</p>
-            <h2>Chocolate que<br />fala por si.</h2>
-            <div className="rating"><span>4,9</span>{[1, 2, 3, 4, 5].map((n) => <Star key={n} size={15} fill="currentColor" />)}<small>128 avaliações</small></div>
-            <p>Camadas generosas de bolo macio, ganache aveludada e chocolate 70%. Feito para dividir — se você quiser.</p>
-            <div className="feature__price"><span>A partir de</span><strong>R$ 52</strong></div>
-            <button className="button button--cream" onClick={() => add(1)}>Pedir agora <ArrowRight size={18} /></button>
+            <h2>{weeklyHighlight?.headline || featuredProduct?.name || "Sabor em destaque."}</h2>
+            {weeklyHighlight && <div className="rating"><span>{weeklyHighlight.rating.toLocaleString("pt-BR")}</span>{[1, 2, 3, 4, 5].map((n) => <Star key={n} size={15} fill="currentColor" />)}<small>{weeklyHighlight.reviewCount} avaliações</small></div>}
+            <p>{weeklyHighlight?.description || featuredProduct?.detail || "Uma escolha especial da nossa cozinha para esta semana."}</p>
+            {featuredProduct && <div className="feature__price"><span>A partir de</span><strong>{currencyFormatter.format(featuredProduct.price)}</strong></div>}
+            <button className="button button--cream" disabled={!featuredProduct} onClick={() => featuredProduct && add(featuredProduct.id)}>Pedir agora <ArrowRight size={18} /></button>
           </div>
-          <div className="feature__image"><Image src="/images/chocolate-feature.png" alt="Bolo e fatia de chocolate" fill sizes="(max-width: 800px) 100vw, 55vw" /></div>
+          <div className="feature__image"><Image src={weeklyHighlight?.imageUrl || featuredProduct?.imageUrl || "/images/chocolate-feature.png"} alt={weeklyHighlight?.imageAlt || featuredProduct?.imageAlt || featuredProduct?.name || "Produto em destaque"} fill sizes="(max-width: 800px) 100vw, 55vw" /></div>
         </div>
       </section>
 

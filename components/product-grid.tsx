@@ -2,11 +2,11 @@ import { ProductCard, type Product } from "./product-card";
 
 type ProductGridProps = {
   products: Product[];
-  quantities: Record<number, number>;
-  isFavorite: (id: number) => boolean;
-  onAdd: (id: number) => void;
-  onRemove: (id: number) => void;
-  onToggleFavorite: (id: number) => void;
+  quantities: Record<string, number>;
+  isFavorite: (id: string) => boolean;
+  onAdd: (id: string) => void;
+  onRemove: (id: string) => void;
+  onToggleFavorite: (id: string) => void;
 };
 
 export function ProductGrid({ products, quantities, isFavorite, onAdd, onRemove, onToggleFavorite }: ProductGridProps) {

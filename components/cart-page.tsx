@@ -7,7 +7,7 @@ import {
   Minus, Plus, QrCode, ShieldCheck, ShoppingBag, Trash2,
 } from "lucide-react";
 import { useState } from "react";
-import { products, currencyFormatter } from "@/lib/products";
+import { currencyFormatter, type Product } from "@/lib/products";
 import { useCart } from "./cart-provider";
 import { Logo } from "./logo";
 
@@ -17,7 +17,7 @@ type CheckoutStep = 1 | 2 | 3;
 
 const stepLabels = ["Sacola", "Dados", "Pagamento"];
 
-export function CartPage() {
+export function CartPage({ products }: { products: Product[] }) {
   const { cart, cartCount, add, remove, removeItem } = useCart();
   const [fulfillment, setFulfillment] = useState<Fulfillment>("delivery");
   const [payment, setPayment] = useState<Payment>("card");
@@ -80,7 +80,7 @@ export function CartPage() {
                 <div className="cart-items">
                   {items.map((product) => (
                     <article className="cart-item" key={product.id}>
-                      <div className="cart-item__image"><Image src="/images/bakery-hero.png" alt={product.name} fill sizes="130px" style={{ objectPosition: product.crop }} /></div>
+                      <div className="cart-item__image"><Image src={product.imageUrl || "/images/bakery-hero.png"} alt={product.imageAlt || product.name} fill sizes="130px" style={{ objectPosition: "center" }} /></div>
                       <div className="cart-item__info">
                         <small>{product.category}</small><h2>{product.name}</h2><p>{product.detail}</p>
                         <button className="remove-item" onClick={() => removeItem(product.id)}><Trash2 size={14} /> Remover</button>

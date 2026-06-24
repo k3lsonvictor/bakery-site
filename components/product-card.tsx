@@ -1,24 +1,16 @@
 import Image from "next/image";
 import { Heart, Minus, Plus } from "lucide-react";
-import { currencyFormatter } from "@/lib/products";
+import { currencyFormatter, type Product } from "@/lib/products";
 
-export type Product = {
-  id: number;
-  name: string;
-  detail: string;
-  price: number;
-  category: "Bolos" | "Doces" | "Pães";
-  crop: string;
-  favorite?: boolean;
-};
+export type { Product } from "@/lib/products";
 
 type ProductCardProps = {
   product: Product;
   quantity: number;
   isFavorite: boolean;
-  onAdd: (id: number) => void;
-  onRemove: (id: number) => void;
-  onToggleFavorite: (id: number) => void;
+  onAdd: (id: string) => void;
+  onRemove: (id: string) => void;
+  onToggleFavorite: (id: string) => void;
 };
 
 export function ProductCard({ product, quantity, isFavorite, onAdd, onRemove, onToggleFavorite }: ProductCardProps) {
@@ -26,11 +18,11 @@ export function ProductCard({ product, quantity, isFavorite, onAdd, onRemove, on
     <article className="product-card">
       <div className="product-card__image">
         <Image
-          src="/images/bakery-hero.png"
-          alt={product.name}
+          src={product.imageUrl || "/images/bakery-hero.png"}
+          alt={product.imageAlt || product.name}
           fill
           sizes="(max-width: 700px) 90vw, 25vw"
-          style={{ objectPosition: product.crop }}
+          style={{ objectPosition: "center" }}
         />
         <button
           className={`favorite${isFavorite ? " favorite--active" : ""}`}
@@ -43,9 +35,11 @@ export function ProductCard({ product, quantity, isFavorite, onAdd, onRemove, on
       </div>
 
       <div className="product-card__body">
-        <p className="product-category">{product.category}</p>
-        <h3>{product.name}</h3>
-        <p>{product.detail}</p>
+        <div className="product-card__content">
+          <p className="product-category">{product.category}</p>
+          <h3>{product.name}</h3>
+          <p>{product.detail}</p>
+        </div>
 
         <div className="product-card__footer">
           <strong>{currencyFormatter.format(product.price)}</strong>

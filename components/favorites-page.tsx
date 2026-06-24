@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Heart, ShoppingBag } from "lucide-react";
-import { products } from "@/lib/products";
+import type { Product } from "@/lib/products";
 import { Logo } from "./logo";
 import { ProductGrid } from "./product-grid";
 import { useCart } from "./cart-provider";
 
-export function FavoritesPage() {
+export function FavoritesPage({ products }: { products: Product[] }) {
   const {
     cart,
     cartCount,
