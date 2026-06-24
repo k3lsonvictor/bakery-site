@@ -6,6 +6,7 @@ import {
   ArrowRight,
   Clock3,
   Instagram,
+  Heart,
   Menu,
   Search,
   ShoppingBag,
@@ -25,7 +26,7 @@ type Category = "Todos" | Product["category"];
 export function BakeryHome() {
   const [category, setCategory] = useState<Category>("Todos");
   const [query, setQuery] = useState("");
-  const { cart, cartCount, add, remove } = useCart();
+  const { cart, cartCount, favoriteCount, add, remove, isFavorite, toggleFavorite } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const visible = useMemo(
@@ -35,7 +36,7 @@ export function BakeryHome() {
   return (
     <main>
       <header className="site-header" id="inicio">
-        <div className="announcement">Feito hoje, com tempo e bons ingredientes <span>•</span> Entregas de segunda a sábado</div>
+        <div className="announcement">Feito hoje, com bons ingredientes <span>•</span> Entregas de segunda a sábado</div>
         <div className="header-inner shell">
           <Logo />
           <nav className={mobileOpen ? "nav nav--open" : "nav"} aria-label="Menu principal">
@@ -46,6 +47,10 @@ export function BakeryHome() {
           </nav>
           <div className="header-actions">
             <button className="icon-button desktop-action" aria-label="Minha conta"><UserRound size={19} /></button>
+            <Link className="icon-button header-favorites" href="/favoritos" aria-label={`Favoritos: ${favoriteCount} itens`}>
+              <Heart size={19} />
+              {favoriteCount > 0 && <b>{favoriteCount}</b>}
+            </Link>
             <Link className="bag-button" href="/sacola" aria-label={`Sacola com ${cartCount} itens`}>
               <ShoppingBag size={19} />
               <span>Sacola</span>
@@ -89,7 +94,14 @@ export function BakeryHome() {
           </div>
           <label className="search-field"><Search size={18} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar uma delícia" /></label>
         </div>
-        <ProductGrid products={visible} quantities={cart} onAdd={add} onRemove={remove} />
+        <ProductGrid
+          products={visible}
+          quantities={cart}
+          isFavorite={isFavorite}
+          onAdd={add}
+          onRemove={remove}
+          onToggleFavorite={toggleFavorite}
+        />
       </section>
 
       <section className="feature-section" id="destaque">

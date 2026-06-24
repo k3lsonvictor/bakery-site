@@ -15,11 +15,13 @@ export type Product = {
 type ProductCardProps = {
   product: Product;
   quantity: number;
+  isFavorite: boolean;
   onAdd: (id: number) => void;
   onRemove: (id: number) => void;
+  onToggleFavorite: (id: number) => void;
 };
 
-export function ProductCard({ product, quantity, onAdd, onRemove }: ProductCardProps) {
+export function ProductCard({ product, quantity, isFavorite, onAdd, onRemove, onToggleFavorite }: ProductCardProps) {
   return (
     <article className="product-card">
       <div className="product-card__image">
@@ -30,8 +32,13 @@ export function ProductCard({ product, quantity, onAdd, onRemove }: ProductCardP
           sizes="(max-width: 700px) 90vw, 25vw"
           style={{ objectPosition: product.crop }}
         />
-        <button className="favorite" aria-label={`Adicionar ${product.name} aos favoritos`}>
-          <Heart size={18} fill={product.favorite ? "currentColor" : "none"} />
+        <button
+          className={`favorite${isFavorite ? " favorite--active" : ""}`}
+          aria-label={`${isFavorite ? "Remover" : "Adicionar"} ${product.name} ${isFavorite ? "dos" : "aos"} favoritos`}
+          aria-pressed={isFavorite}
+          onClick={() => onToggleFavorite(product.id)}
+        >
+          <Heart size={18} fill={isFavorite ? "currentColor" : "none"} />
         </button>
       </div>
 

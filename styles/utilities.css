@@ -1,0 +1,9 @@
+.shell { width: min(var(--container-wide), calc(100% - (var(--container-gutter) * 2))); margin-inline: auto; }
+.section { padding-block: var(--section-space); }
+.eyebrow { margin: 0 0 16px; color: var(--rust); font-size: .72rem; font-weight: 700; letter-spacing: .16em; }
+.eyebrow.light { color: #f5c9ac; }
+
+@media (max-width: 900px) {
+  .shell { width: min(calc(100% - (var(--container-gutter-mobile) * 2)), var(--container-tablet)); }
+  .section { padding-block: var(--section-space-tablet); }
+}

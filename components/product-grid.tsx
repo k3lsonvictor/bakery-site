@@ -3,11 +3,13 @@ import { ProductCard, type Product } from "./product-card";
 type ProductGridProps = {
   products: Product[];
   quantities: Record<number, number>;
+  isFavorite: (id: number) => boolean;
   onAdd: (id: number) => void;
   onRemove: (id: number) => void;
+  onToggleFavorite: (id: number) => void;
 };
 
-export function ProductGrid({ products, quantities, onAdd, onRemove }: ProductGridProps) {
+export function ProductGrid({ products, quantities, isFavorite, onAdd, onRemove, onToggleFavorite }: ProductGridProps) {
   return (
     <div className="product-grid">
       {products.map((product) => (
@@ -15,8 +17,10 @@ export function ProductGrid({ products, quantities, onAdd, onRemove }: ProductGr
           key={product.id}
           product={product}
           quantity={quantities[product.id] ?? 0}
+          isFavorite={isFavorite(product.id)}
           onAdd={onAdd}
           onRemove={onRemove}
+          onToggleFavorite={onToggleFavorite}
         />
       ))}
 
