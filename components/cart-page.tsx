@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowLeft, ArrowRight, Check, CheckCircle2, Clock3, CreditCard, MapPin,
-  Minus, Plus, QrCode, ShieldCheck, ShoppingBag, Trash2,
+  ArrowLeft, ArrowRight, Banknote, Check, CheckCircle2, Clock3, CreditCard,
+  MapPin, Minus, Plus, ShieldCheck, ShoppingBag, Trash2,
 } from "lucide-react";
 import { useState } from "react";
 import { currencyFormatter, type Product } from "@/lib/products";
@@ -12,7 +12,8 @@ import { useCart } from "./cart-provider";
 import { Logo } from "./logo";
 
 type Fulfillment = "delivery" | "pickup";
-type Payment = "card" | "pix";
+type Payment = "card" | "cash";
+type ChangeOption = "no" | "yes";
 type CheckoutStep = 1 | 2 | 3;
 
 const stepLabels = ["Sacola", "Dados", "Pagamento"];
@@ -21,6 +22,8 @@ export function CartPage({ products }: { products: Product[] }) {
   const { cart, cartCount, add, remove, removeItem } = useCart();
   const [fulfillment, setFulfillment] = useState<Fulfillment>("delivery");
   const [payment, setPayment] = useState<Payment>("card");
+  const [changeOption, setChangeOption] = useState<ChangeOption>("no");
+  const [changeFor, setChangeFor] = useState("");
   const [step, setStep] = useState<CheckoutStep>(1);
   const [coupon, setCoupon] = useState("");
   const [completed, setCompleted] = useState(false);
@@ -146,30 +149,39 @@ export function CartPage({ products }: { products: Product[] }) {
                 <div className="pickup-notice"><MapPin size={22} /><div><strong>Retirada na Padaria Pão Nosso</strong><p>Rua da Alegria, 3055 • Santo Antônio, Teresina</p></div></div>
               )}
               <label className="order-note"><span>Observações do pedido <small>(opcional)</small></span><textarea placeholder="Alguma preferência ou informação importante?" /></label>
-              <button className="button button--primary form-next" type="submit">Ir para pagamento <ArrowRight size={18} /></button>
+              <button className="button button--primary form-next" type="submit">Escolher forma de pagamento <ArrowRight size={18} /></button>
             </form>
           )}
 
           {step === 3 && !completed && (
-            <div className="checkout-form payment-form">
+            <form className="checkout-form payment-form" onSubmit={(event) => { event.preventDefault(); nextStep(); }}>
               <button type="button" className="cart-back" onClick={previousStep}><ArrowLeft size={17} /> Voltar para os dados</button>
-              <div className="checkout-form__title"><p className="eyebrow">ÚLTIMA ETAPA</p><h1>Pagamento</h1><p>Escolha como prefere pagar seu pedido.</p></div>
+              <div className="checkout-form__title"><p className="eyebrow">ÚLTIMA ETAPA</p><h1>Pagamento na entrega</h1><p>Escolha como prefere pagar quando receber seu pedido.</p></div>
               <div className="payment-options">
-                <button className={payment === "card" ? "active" : ""} onClick={() => setPayment("card")}><CreditCard /><span><strong>Cartão de crédito</strong><small>Pagamento seguro e imediato</small></span>{payment === "card" && <Check size={17} />}</button>
-                <button className={payment === "pix" ? "active" : ""} onClick={() => setPayment("pix")}><QrCode /><span><strong>Pix</strong><small>Aprovação em poucos segundos</small></span>{payment === "pix" && <Check size={17} />}</button>
+                <button type="button" className={payment === "card" ? "active" : ""} onClick={() => setPayment("card")}><CreditCard /><span><strong>Cartão na entrega</strong><small>Pague com cartão ao receber</small></span>{payment === "card" && <Check size={17} />}</button>
+                <button type="button" className={payment === "cash" ? "active" : ""} onClick={() => setPayment("cash")}><Banknote /><span><strong>Dinheiro</strong><small>Pague em espécie ao receber</small></span>{payment === "cash" && <Check size={17} />}</button>
               </div>
-              {payment === "card" ? (
-                <div className="card-fields form-grid">
-                  <label className="full"><span>Número do cartão</span><input placeholder="0000 0000 0000 0000" /></label>
-                  <label className="full"><span>Nome impresso</span><input placeholder="NOME COMO NO CARTÃO" /></label>
-                  <label><span>Validade</span><input placeholder="MM/AA" /></label>
-                  <label><span>CVV</span><input placeholder="123" /></label>
-                </div>
-              ) : (
-                <div className="pix-notice"><QrCode size={30} /><div><strong>O QR Code será gerado depois da confirmação</strong><p>Você terá 15 minutos para concluir o pagamento.</p></div></div>
+              {payment === "cash" && (
+                <fieldset className="change-fields">
+                  <legend>Vai precisar de troco?</legend>
+                  <div className="payment-options change-options">
+                    <button type="button" className={changeOption === "no" ? "active" : ""} onClick={() => { setChangeOption("no"); setChangeFor(""); }}><span><strong>Não preciso</strong><small>Vou pagar o valor exato</small></span>{changeOption === "no" && <Check size={17} />}</button>
+                    <button type="button" className={changeOption === "yes" ? "active" : ""} onClick={() => setChangeOption("yes")}><span><strong>Sim, preciso</strong><small>Informe o valor abaixo</small></span>{changeOption === "yes" && <Check size={17} />}</button>
+                  </div>
+                  {changeOption === "yes" && (
+                    <div className="form-grid">
+                      <label className="full"><span>Troco para quanto?</span><input required type="number" min={total} step="0.01" inputMode="decimal" value={changeFor} onChange={(event) => setChangeFor(event.target.value)} placeholder={`Ex.: ${currencyFormatter.format(Math.ceil(total / 10) * 10)}`} /></label>
+                    </div>
+                  )}
+                </fieldset>
               )}
-              <button className="button button--primary form-next" onClick={nextStep}>Confirmar pedido • {currencyFormatter.format(total)} <ArrowRight size={18} /></button>
-            </div>
+              {payment === "card" && (
+                <div className="payment-notice">
+                  <CreditCard size={30} /><div><strong>Pagamento feito no recebimento</strong><p>Tenha seu cartão em mãos quando o pedido chegar.</p></div>
+                </div>
+              )}
+              <button className="button button--primary form-next" type="submit">Confirmar pedido • {currencyFormatter.format(total)} <ArrowRight size={18} /></button>
+            </form>
           )}
 
           {step === 3 && completed && (

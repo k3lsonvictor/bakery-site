@@ -1535,7 +1535,7 @@ footer {
 }
 
 .pickup-notice,
-.pix-notice {
+.payment-notice {
   margin-bottom: 34px;
   padding: 22px;
   display: flex;
@@ -1547,7 +1547,7 @@ footer {
 }
 
 .pickup-notice strong,
-.pix-notice strong {
+.payment-notice strong {
   display: block;
   margin-bottom: 4px;
   color: var(--ink);
@@ -1555,7 +1555,7 @@ footer {
 }
 
 .pickup-notice p,
-.pix-notice p {
+.payment-notice p {
   margin: 0;
   color: var(--muted);
   font-size: .71rem;
@@ -1607,6 +1607,10 @@ footer {
   margin-bottom: 28px;
   padding: 28px;
   background: #ede4d9;
+}
+
+.change-fields .change-options {
+  margin-bottom: 18px;
 }
 
 .checkout-success {
